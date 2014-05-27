@@ -1,0 +1,23 @@
+# RebuildRelatedObjects
+#
+# Release 1.0.0 (2014-05-27)
+#
+# Copyright (c) bit part LLC - http://bit-part.net/
+name: RebuildRelatedObjects
+id: RebuildRelatedObjects
+version: 1.0.0
+author_name: '<__trans phrase="bit part LLC">'
+author_link: http://bit-part.net/
+description: '<__trans phrase="Rebuild related entries or pages.">'
+plugin_link:
+doc_link:
+l10n_class: RebuildRelatedObjects::L10N
+blog_config_template: config_blog.tmpl
+settings:
+    entry_field_basename:
+        scope: blog
+    page_field_basename:
+        scope: blog
+callbacks:
+    MT::App::CMS::cms_post_save.entry: $RebuildRelatedObjects::RebuildRelatedObjects::Callbacks::_hdlr_cms_post_save
+    MT::App::CMS::cms_post_save.page: $RebuildRelatedObjects::RebuildRelatedObjects::Callbacks::_hdlr_cms_post_save
