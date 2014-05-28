@@ -11,12 +11,15 @@ sub _hdlr_cms_post_save {
     my $scope = 'blog:' . $blog_id;
     my $plugin = MT->component('RebuildRelatedObjects');
 
-    my $class = $obj->class
+    my $posted_class = $obj->class
         or return;
 
-    my $setting_name = $class . '_field_basename';
+    my $setting_name = $posted_class . '_field_basename';
 
     my $field = $plugin->get_config_value($setting_name, $scope);
+
+    my $rebuild_class = ($field =~ /^page\./) ? 'page' : 'entry';
+    $field =~ s/^(page|entry)\.//;
 
     my $ids = $obj->$field
         or return;
@@ -24,7 +27,7 @@ sub _hdlr_cms_post_save {
     $ids =~ s/^,|,$//g;
     require MT::WeblogPublisher;
     foreach my $id ( split(/,/, $obj->$field) ) {
-        my $object = ($class eq 'entry') ? MT::Entry->load($id) : MT::Page->load($id);
+        my $object = ($rebuild_class eq 'page') ? MT::Page->load($id) : MT::Entry->load($id);
         my $pub = MT::WeblogPublisher->new;
         my $result = $pub->rebuild_entry(Entry => $object);
     }
