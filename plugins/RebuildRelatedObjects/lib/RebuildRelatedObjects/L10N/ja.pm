@@ -7,14 +7,12 @@ use vars qw ( %Lexicon );
 %Lexicon = (
     'bit part LLC' => 'bit part 合同会社',
     'Rebuild related entries or pages.' => '関連する記事・ウェブページを再構築します。',
-    'sanmpe' => 'サンプル',
-    'test' => 'テスト',
-    # blogsetting01
+    # config_blog.tmpl
     'Entry Field Basename' => 'フィールドのベースネーム(記事)',
-    'Input a basename of field storing page ids.' => 'ウェブページIDが保存されているフィールドのベースネームを入力してください。',
+    'Save basename of a field on Entry.' => '記事のフィールドのベースネームを入力',
     # settingname01
     'Page Field Basename' => 'フィールドのベースネーム(ウェブページ)',
-    'Input a basename of field storing entry ids.' => '記事IDが保存されているフィールドのベースネームを入力してください。',
+    'Save basename of a field on Page.' => 'ウェブページのフィールドのベースネームを入力',
 );
 
 1;
