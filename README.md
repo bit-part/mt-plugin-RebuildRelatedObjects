@@ -30,8 +30,6 @@ Example:<br>
 If you use keywords Field, you save "keywords".<br>
 If you use a custom field whose basename is "foo", you save "field.foo".<br>
 
-When you save Page's ids to these fields, you add "page" to the basename.(ex: "page.field.foo")
-
 ### Step 3 : Save an ID in the field
 
 You save an ID in the field. If you save some IDs, you can type IDs separated by comma.

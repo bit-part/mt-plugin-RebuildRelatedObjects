@@ -26,9 +26,9 @@ sub _hdlr_cms_post_save {
 
     $ids =~ s/^,|,$//g;
     require MT::WeblogPublisher;
+    my $pub = MT::WeblogPublisher->new;
     foreach my $id ( split(/,/, $obj->$field) ) {
-        my $object = ($rebuild_class eq 'page') ? MT::Page->load($id) : MT::Entry->load($id);
-        my $pub = MT::WeblogPublisher->new;
+        my $object = MT->model($rebuild_class)->load($id);
         my $result = $pub->rebuild_entry(Entry => $object);
     }
 }
