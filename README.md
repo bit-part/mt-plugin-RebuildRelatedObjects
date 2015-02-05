@@ -29,6 +29,7 @@ Save a basename of the field prepared at step1, to RebuildRelatedObjects Plugin 
 Example:<br>
 If you use keywords Field, you save "keywords".<br>
 If you use a custom field whose basename is "foo", you save "field.foo".<br>
+If you use both the fields, you save the comma separated field name; "keywords,field.foo".
 
 ### Step 3 : Save an ID in the field
 
