@@ -16,20 +16,22 @@ sub _hdlr_cms_post_save {
 
     my $setting_name = $posted_class . '_field_basename';
 
-    my $field = $plugin->get_config_value($setting_name, $scope);
+    my $fields = $plugin->get_config_value($setting_name, $scope);
 
-    my $rebuild_class = ($field =~ /^page\./) ? 'page' : 'entry';
-    $field =~ s/^(page|entry)\.//;
+    foreach my $field ( split(/,/, $fields) ) {
+        my $rebuild_class = ($field =~ /^page\./) ? 'page' : 'entry';
+        $field =~ s/^(page|entry)\.//;
 
-    my $ids = $obj->$field
-        or return;
+        my $ids = $obj->$field
+            or return;
 
-    $ids =~ s/^,|,$//g;
-    require MT::WeblogPublisher;
-    my $pub = MT::WeblogPublisher->new;
-    foreach my $id ( split(/,/, $obj->$field) ) {
-        my $object = MT->model($rebuild_class)->load($id);
-        my $result = $pub->rebuild_entry(Entry => $object);
+        $ids =~ s/^,|,$//g;
+        require MT::WeblogPublisher;
+        my $pub = MT::WeblogPublisher->new;
+        foreach my $id ( split(/,/, $obj->$field) ) {
+            my $object = MT->model($rebuild_class)->load($id);
+            my $result = $pub->rebuild_entry(Entry => $object);
+        }
     }
 }
 
