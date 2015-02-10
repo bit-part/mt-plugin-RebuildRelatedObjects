@@ -15,6 +15,13 @@ settings:
         scope: blog
     page_field_basename:
         scope: blog
+    enable_mutual_relation:
+        scope: blog
+        default: 1
 callbacks:
-    MT::App::CMS::cms_post_save.entry: $RebuildRelatedObjects::RebuildRelatedObjects::Callbacks::_hdlr_cms_post_save
-    MT::App::CMS::cms_post_save.page: $RebuildRelatedObjects::RebuildRelatedObjects::Callbacks::_hdlr_cms_post_save
+    MT::App::CMS::cms_post_save.entry:
+        - handler: $RebuildRelatedObjects::RebuildRelatedObjects::Callbacks::_hdlr_cms_post_save
+          priority: 6
+    MT::App::CMS::cms_post_save.page:
+        - handler: $RebuildRelatedObjects::RebuildRelatedObjects::Callbacks::_hdlr_cms_post_save
+          priority: 6
