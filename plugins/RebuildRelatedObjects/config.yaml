@@ -25,3 +25,9 @@ callbacks:
     MT::App::CMS::cms_post_save.page:
         - handler: $RebuildRelatedObjects::RebuildRelatedObjects::Callbacks::_hdlr_cms_post_save
           priority: 6
+    MT::App::CMS::cms_post_delete.entry:
+        - handler: $RebuildRelatedObjects::RebuildRelatedObjects::Callbacks::_hdlr_cms_post_delete
+          priority: 6
+    MT::App::CMS::cms_post_delete.page:
+        - handler: $RebuildRelatedObjects::RebuildRelatedObjects::Callbacks::_hdlr_cms_post_delete
+          priority: 6
