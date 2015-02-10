@@ -10,9 +10,10 @@ use vars qw ( %Lexicon );
     # config_blog.tmpl
     'Entry Field Basename' => 'フィールドのベースネーム(記事)',
     'Save basename of a field on Entry.' => '記事のフィールドのベースネームを入力',
-    # settingname01
     'Page Field Basename' => 'フィールドのベースネーム(ウェブページ)',
     'Save basename of a field on Page.' => 'ウェブページのフィールドのベースネームを入力',
+    'Enable Mutual Relation' => '相互関連付けを有効にする',
+    'Relate each other' => '相互に関連付けます',
 );
 
 1;
