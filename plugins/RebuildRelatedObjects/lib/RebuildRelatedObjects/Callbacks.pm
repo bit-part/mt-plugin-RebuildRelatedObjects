@@ -86,4 +86,55 @@ sub _hdlr_cms_post_save {
     }
 }
 
+sub _hdlr_cms_post_delete {
+    my ($cb, $app, $obj) = @_;
+
+    my $blog_id = $obj->blog_id
+        or return;
+    my $scope = 'blog:' . $blog_id;
+    my $plugin = MT->component('RebuildRelatedObjects');
+
+    my $posted_class = $obj->class
+        or return;
+    my $posted_id = $obj->id;
+
+    my $setting_name = $posted_class . '_field_basename';
+
+    my $fields = $plugin->get_config_value($setting_name, $scope);
+    my $enable_mutual_relation = $plugin->get_config_value('enable_mutual_relation', $scope);
+
+    foreach my $field ( split(/,/, $fields) ) {
+        my $rebuild_class = ($field =~ /^page\./) ? 'page' : 'entry';
+        $field =~ s/^(page|entry)\.//;
+
+        my $ids = $obj->$field;
+        $ids =~ s/^,|,$//g;
+        my @ids = split(/,/, $ids);
+
+        require MT::WeblogPublisher;
+        my $pub = MT::WeblogPublisher->new;
+
+        # Disconnect
+        foreach my $id (@ids) {
+            my $object = MT->model($rebuild_class)->load($id)
+                or next;
+            my $relation_ids = $object->$field
+                or next;
+            $relation_ids =~ s/^,+|,+$//;
+            my @relation_ids_array = split(/,/, $relation_ids);
+            @relation_ids_array = grep {$_ ne $posted_id} @relation_ids_array;
+            if ($#relation_ids_array > 0) {
+                $object->$field(',' . join(',', @relation_ids_array) . ',');
+            }
+            elsif ($#relation_ids_array == 0) {
+                $object->$field($relation_ids_array[0]);
+            }
+            else {
+                $object->$field('');
+            }
+            $object->save;
+            my $result = $pub->rebuild_entry(Entry => $object);
+        }
+    }
+}
 1;
