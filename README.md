@@ -39,6 +39,8 @@ You save an ID in the field. If you save some IDs, you can type IDs separated by
 
 When you save the Entry/Page, System rebuild entries/pages whose IDs you saved.
 
+If you checked "Enable Mutual Relation" on plugin settings, the saved Entry/Page ID is saved in the same field of related entries/pages.
+
 ---
 
 MT::Lover::bitpart
