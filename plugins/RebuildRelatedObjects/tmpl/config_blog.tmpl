@@ -7,6 +7,7 @@
     <input type="text" name="entry_field_basename" id="entry_field_basename" class="text" value="<mt:var name="entry_field_basename" escape="html">" mt:watch-change="1" autocomplete="off">
 </mtapp:setting>
 <mt:ignore>=== entry_field_basename [ end ] ===</mt:ignore>
+
 <mt:ignore>=== page_field_basename [start] ===</mt:ignore>
 <mtapp:setting
     id="page_field_basename"
@@ -16,3 +17,13 @@
     <input type="text" name="page_field_basename" id="page_field_basename" class="text" value="<mt:var name="page_field_basename" escape="html">" mt:watch-change="1" autocomplete="off">
 </mtapp:setting>
 <mt:ignore>=== page_field_basename [ end ] ===</mt:ignore>
+
+<mt:ignore>=== enable_mutual_relation [start] ===</mt:ignore>
+<mtapp:setting
+    id="enable_mutual_relation"
+    hint="<__trans phrase='Relate each other'>"
+    show_hint="0"
+    label="<__trans phrase='Enable Mutual Relation'>">
+    <input type="checkbox" name="enable_mutual_relation" id="enable_mutual_relation"<mt:If name="enable_mutual_relation"> checked="checked"</mt:If>>
+</mtapp:setting>
+<mt:ignore>=== enable_mutual_relation [ end ] ===</mt:ignore>

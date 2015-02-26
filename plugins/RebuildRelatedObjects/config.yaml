@@ -2,7 +2,7 @@
 # Copyright (c) bit part LLC - http://bit-part.net/
 name: RebuildRelatedObjects
 id: RebuildRelatedObjects
-version: 1.1.0
+version: 2.0.0
 author_name: '<__trans phrase="bit part LLC">'
 author_link: http://bit-part.net/
 description: '<__trans phrase="Rebuild related entries or pages.">'
@@ -15,6 +15,19 @@ settings:
         scope: blog
     page_field_basename:
         scope: blog
+    enable_mutual_relation:
+        scope: blog
+        default: 1
 callbacks:
-    MT::App::CMS::cms_post_save.entry: $RebuildRelatedObjects::RebuildRelatedObjects::Callbacks::_hdlr_cms_post_save
-    MT::App::CMS::cms_post_save.page: $RebuildRelatedObjects::RebuildRelatedObjects::Callbacks::_hdlr_cms_post_save
+    MT::App::CMS::cms_post_save.entry:
+        - handler: $RebuildRelatedObjects::RebuildRelatedObjects::Callbacks::_hdlr_cms_post_save
+          priority: 6
+    MT::App::CMS::cms_post_save.page:
+        - handler: $RebuildRelatedObjects::RebuildRelatedObjects::Callbacks::_hdlr_cms_post_save
+          priority: 6
+    MT::App::CMS::cms_post_delete.entry:
+        - handler: $RebuildRelatedObjects::RebuildRelatedObjects::Callbacks::_hdlr_cms_post_delete
+          priority: 6
+    MT::App::CMS::cms_post_delete.page:
+        - handler: $RebuildRelatedObjects::RebuildRelatedObjects::Callbacks::_hdlr_cms_post_delete
+          priority: 6
