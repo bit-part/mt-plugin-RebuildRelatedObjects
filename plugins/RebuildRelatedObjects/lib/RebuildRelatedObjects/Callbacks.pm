@@ -24,14 +24,25 @@ sub _hdlr_cms_post_save {
         my $rebuild_class = ($field =~ /^page\./) ? 'page' : 'entry';
         $field =~ s/^(page|entry)\.//;
 
+        my $related_field = '';
+        if ($field =~ /([^:]+):([^:]+)/) {
+            ($field, $related_field) = split(/:/, $field);
+        }
+        else {
+            $related_field = $field;
+        }
+
+        # Get the IDs of original object; that is "Original IDs".
         my $orig_ids = $orig_obj->$field;
         $orig_ids =~ s/^,|,$//g;
         my @orig_ids = split(/,/, $orig_ids);
 
+        # Get the IDs of saving object; that is "Saving IDs".
         my $ids = $obj->$field;
         $ids =~ s/^,|,$//g;
         my @ids = split(/,/, $ids);
 
+        # If an ID of the Original IDs isn't included in Saving IDs, push the ID into @disconnect_ids.
         my @disconnect_ids;
         foreach my $id (@orig_ids) {
             unless (grep {$_ eq $id} @ids) {
@@ -45,18 +56,19 @@ sub _hdlr_cms_post_save {
         foreach my $id (@ids) {
             my $object = MT->model($rebuild_class)->load($id);
             if ($enable_mutual_relation) {
-                my $relation_ids = $object->$field;
+                my $relation_ids = $object->$related_field;
                 unless ($relation_ids) {
-                    $object->$field($posted_id);
+                    $object->$related_field($posted_id);
                 }
                 else {
                     $relation_ids =~ s/^,+|,+$//;
                     my @relation_ids_array = split(/,/, $relation_ids);
                     if (grep {$_ eq $posted_id} @relation_ids_array) {
                         # have got
-                    } else {
+                    }
+                    else {
                         push(@relation_ids_array, $posted_id);
-                        $object->$field(',' . join(',', @relation_ids_array) . ',');
+                        $object->$related_field(',' . join(',', @relation_ids_array) . ',');
                     }
                 }
                 $object->save;
@@ -66,19 +78,19 @@ sub _hdlr_cms_post_save {
         # Disconnect
         foreach my $id (@disconnect_ids) {
             my $object = MT->model($rebuild_class)->load($id) or next;
-            my $relation_ids = $object->$field or next;
+            my $relation_ids = $object->$related_field or next;
 
             $relation_ids =~ s/^,+|,+$//;
             my @relation_ids_array = split(/,/, $relation_ids);
             @relation_ids_array = grep {$_ ne $posted_id} @relation_ids_array;
             if ($#relation_ids_array > 0) {
-                $object->$field(',' . join(',', @relation_ids_array) . ',');
+                $object->$related_field(',' . join(',', @relation_ids_array) . ',');
             }
             elsif ($#relation_ids_array == 0) {
-                $object->$field($relation_ids_array[0]);
+                $object->$related_field($relation_ids_array[0]);
             }
             else {
-                $object->$field('');
+                $object->$related_field('');
             }
             $object->save;
             my $result = $pub->rebuild_entry(Entry => $object);
@@ -107,6 +119,14 @@ sub _hdlr_cms_post_delete {
         my $rebuild_class = ($field =~ /^page\./) ? 'page' : 'entry';
         $field =~ s/^(page|entry)\.//;
 
+        my $related_field = '';
+        if ($field =~ /([^:]+):([^:]+)/) {
+            ($field, $related_field) = split(/:/, $field);
+        }
+        else {
+            $related_field = $field;
+        }
+
         my $ids = $obj->$field;
         $ids =~ s/^,|,$//g;
         my @ids = split(/,/, $ids);
@@ -118,23 +138,24 @@ sub _hdlr_cms_post_delete {
         foreach my $id (@ids) {
             my $object = MT->model($rebuild_class)->load($id)
                 or next;
-            my $relation_ids = $object->$field
+            my $relation_ids = $object->$related_field
                 or next;
             $relation_ids =~ s/^,+|,+$//;
             my @relation_ids_array = split(/,/, $relation_ids);
             @relation_ids_array = grep {$_ ne $posted_id} @relation_ids_array;
             if ($#relation_ids_array > 0) {
-                $object->$field(',' . join(',', @relation_ids_array) . ',');
+                $object->$related_field(',' . join(',', @relation_ids_array) . ',');
             }
             elsif ($#relation_ids_array == 0) {
-                $object->$field($relation_ids_array[0]);
+                $object->$related_field($relation_ids_array[0]);
             }
             else {
-                $object->$field('');
+                $object->$related_field('');
             }
             $object->save;
             my $result = $pub->rebuild_entry(Entry => $object);
         }
     }
 }
+
 1;

@@ -27,9 +27,13 @@ Prepare a field saving Entry/Page IDs on Entry/Page. You can use either a defaul
 Save a basename of the field prepared at step1, to RebuildRelatedObjects Plugin setting. The basename of the field on Entry save to "Entry Field Basename". The basename of the field on Page save to "Page Field Basename".
 
 Example:<br>
-If you use keywords Field, you save "keywords".<br>
-If you use a custom field whose basename is "foo", you save "field.foo".<br>
-If you use both the fields, you save the comma separated field name; "keywords,field.foo".
+If you use keywords Field, you save `keywords`.<br>
+If you use a custom field whose basename is "foo", you save `field.foo`.<br>
+If you use both the fields, you save the comma separated field name; `keywords,field.foo`.
+
+When you use "Enable Mutual Relation", and Saved Entry's basename and Related Entry's basename are different, you type the following:
+
+    field.foo:field.related_entries
 
 ### Step 3 : Save an ID in the field
 
