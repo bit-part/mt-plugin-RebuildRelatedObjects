@@ -2,10 +2,10 @@
 # Copyright (c) bit part LLC - http://bit-part.net/
 name: RebuildRelatedObjects
 id: RebuildRelatedObjects
-version: 2.0.0
+version: 2.1.0
 author_name: '<__trans phrase="bit part LLC">'
 author_link: http://bit-part.net/
-description: '<__trans phrase="Rebuild related entries or pages.">'
+description: '<__trans phrase="Relate entries or pages.">'
 plugin_link: https://github.com/bit-part/mt-plugin-RebuildRelatedObjects
 doc_link: https://github.com/bit-part/mt-plugin-RebuildRelatedObjects/README.md
 l10n_class: RebuildRelatedObjects::L10N
