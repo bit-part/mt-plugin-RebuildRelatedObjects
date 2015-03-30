@@ -54,7 +54,8 @@ sub _hdlr_cms_post_save {
         my $pub = MT::WeblogPublisher->new;
         # Relate
         foreach my $id (@ids) {
-            my $object = MT->model($rebuild_class)->load($id);
+            my $object = MT->model($rebuild_class)->load($id)
+                or next;
             if ($enable_mutual_relation) {
                 my $relation_ids = $object->$related_field;
                 unless ($relation_ids) {
@@ -77,8 +78,10 @@ sub _hdlr_cms_post_save {
         }
         # Disconnect
         foreach my $id (@disconnect_ids) {
-            my $object = MT->model($rebuild_class)->load($id) or next;
-            my $relation_ids = $object->$related_field or next;
+            my $object = MT->model($rebuild_class)->load($id)
+                or next;
+            my $relation_ids = $object->$related_field
+                or next;
 
             $relation_ids =~ s/^,+|,+$//;
             my @relation_ids_array = split(/,/, $relation_ids);
