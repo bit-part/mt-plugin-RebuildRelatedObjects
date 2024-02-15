@@ -2,7 +2,7 @@
 # Copyright (c) bit part LLC - http://bit-part.net/
 name: RebuildRelatedObjects
 id: RebuildRelatedObjects
-version: 2.1.1
+version: 2.1.2
 author_name: '<__trans phrase="bit part LLC">'
 author_link: http://bit-part.net/
 description: '<__trans phrase="Relate entries or pages.">'

@@ -10,6 +10,8 @@ Rebuild related entries or pages.
 ## Prerequisites
 
 * Movable Type 6
+* Movable Type 7
+* Movable Type 8
 
 ## Installation
 
